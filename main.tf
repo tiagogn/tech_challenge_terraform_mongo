@@ -7,7 +7,7 @@ provider "aws" {
 resource "aws_security_group" "mongodb_sg" {
   name        = "mongodb-security-group"
   description = "Permitir acesso ao MongoDB a partir do EKS"
-  vpc_id      = aws_vpc.main.id
+  vpc_id      = var.vpc_id
 
   egress {
     from_port   = 0
@@ -35,7 +35,7 @@ resource "aws_security_group_rule" "mongodb_ingress" {
 resource "aws_db_subnet_group" "mongodb_subnet_group" {
   name        = "mongodb-subnet-group"
   description = "Subnet Group para MongoDB"
-  subnet_ids  = [for s in aws_subnet.private : s.id]
+  subnet_ids  = var.subnets
 
   tags = {
     Name = "mongodb-subnet-group"
